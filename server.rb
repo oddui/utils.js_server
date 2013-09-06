@@ -14,6 +14,10 @@ before do
   headers 'Access-Control-Allow-Headers' => 'accept, authorization, origin'
 end
 
+get '/' do
+  send_file File.expand_path('index.html', settings.public_folder)
+end
+
 get '/get' do
   content_type :json
   { key: params[:data] }.to_json
