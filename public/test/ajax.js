@@ -4,8 +4,8 @@ $(document).ready(function() {
 
   module('ajax');
 
-  //var host = '/';
-  var host = 'http://localhost:4567/';
+  var host = '/';
+  //var host = 'http://localhost:4567/';
   //var host = 'http://localhost:5000/';
   //var host = 'http://utilsjs.herokuapp.com/';
 
