@@ -4,8 +4,8 @@ $(document).ready(function() {
 
   module('ajax');
 
-  var host = '/';
-  //var host = 'http://localhost:4567/';
+  //var host = '/';
+  var host = 'http://localhost:4567/';
   //var host = 'http://localhost:5000/';
   //var host = 'http://utilsjs.herokuapp.com/';
 
@@ -27,6 +27,9 @@ $(document).ready(function() {
       url: host + 'get',
       data: { data: 'test' },
       success: function (response, xhr, settings) {
+        //console.log(xhr.readyState);
+        //console.log(xhr.status);
+        //console.log(xhr.statusText);
         equal(this, window, 'default context is window');
         ok(true, 'default type is get');
         ok(true, 'request sent asynchronously by default');
@@ -40,8 +43,10 @@ $(document).ready(function() {
   asyncTest('ajax error callback', function() {
     utils.ajax({
       url: host + 'path_do_not_exist',
-      error: function (status) {
+      error: function (status, xhr) {
         ok(true, 'error callback triggered');
+        equal(status, 'ajax: Unsuccessful request', 'got status ajax: Unsuccessful request');
+        equal(xhr.status, 404, 'http 404 not found');
         start();
       }
     });
@@ -72,15 +77,14 @@ $(document).ready(function() {
       url: host + 'get',
       data: { data: 'test' },
       success: function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.ajax got right response');
         start();
       }
     });
-  });
 
-  asyncTest('ajax get wrapper', function() {
+    stop();
     utils.get(host + 'get', { data: 'test' }, function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.get got right response');
         start();
       }, 'json');
   });
@@ -91,16 +95,15 @@ $(document).ready(function() {
       url: host + 'post',
       data: { data: 'test' },
       success: function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.ajax got right response');
         start();
       },
       contentType: "application/x-www-form-urlencoded"
     });
-  });
 
-  asyncTest('ajax post wrapper', function() {
+    stop();
     utils.post(host+'post', { data: 'test' }, function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.post got right response');
         start();
       }, 'json');
   });
@@ -111,16 +114,15 @@ $(document).ready(function() {
       url: host + 'put',
       data: { data: 'test' },
       success: function (response, xhr, settings) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.ajax got right response');
         start();
       },
       contentType: "application/x-www-form-urlencoded"
     });
-  });
 
-  asyncTest('ajax put wrapper', function() {
+    stop();
     utils.put(host+'put', { data: 'test' }, function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.put got right response');
         start();
       }, 'json');
   });
@@ -131,16 +133,15 @@ $(document).ready(function() {
       url: host + 'delete',
       data: { data: 'test' },
       success: function (response, xhr, settings) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.ajax got right response');
         start();
       },
       contentType: "application/x-www-form-urlencoded"
     });
-  });
 
-  asyncTest('ajax delete wrapper', function() {
+    stop();
     utils['delete'](host+'delete', { data: 'test' }, function (response) {
-        jsonEqual(response, { key: 'test' }, 'got right response');
+        jsonEqual(response, { key: 'test' }, 'utils.delete got right response');
         start();
       }, 'json');
   });

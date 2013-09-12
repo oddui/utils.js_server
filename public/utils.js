@@ -1,8 +1,8 @@
 /**
  * utils.js
  *
- * super small javascript library that simplifies HTML document traversing,
- * event handling, ajax interactions and other functional utilities.
+ * Super small javascript library that simplifies HTML document traversing,
+ * event handling, ajax interactions and provides other functional utilities.
  *
  * utils.js depends on underscore.js
  *
@@ -38,6 +38,8 @@ var utils = function () {
       if (selector.nodeType === 1) {
         // an element is passed in assign it to el directly
         elements = [selector];
+      } else if ($.toType(selector) === 'array') {
+        elements = selector;
       } else {
         elements = getElements( selector, context );
       }
@@ -70,8 +72,8 @@ var utils = function () {
 
     // takes an array-like object and turns it into real Array
     // to make all the Array.prototype goodness available.
-    $.arrayify = function ( a ) {
-      return [].slice.call( a );
+    $.arrayify = function (a) {
+      return [].slice.call(a);
     };
 
     // this function should only be called on a utils.js dom object.
@@ -82,6 +84,13 @@ var utils = function () {
         return callback.call(element, element, index);
       });
       return this;
+    };
+
+    $.aug.filter = function(selector) {
+      return $([].filter.call(this, function(element) {
+        return element.parentNode &&
+          _(element.parentNode.querySelectorAll(selector)).contains(element);
+      }));
     };
 
   })($);
@@ -96,6 +105,7 @@ var utils = function () {
         }
       });
     };
+
   })($);
 
   // output
@@ -106,20 +116,27 @@ var utils = function () {
 
       return this.each(function() {
         if (type === "string") {
+          console.log('appending string');
           this.insertAdjacentHTML("beforeend", value);
         } else if (type === "array") {
-          _(value).each(function(index, value) {
+          console.log('appending elements');
+          _(value).each(function(value, index) {
+            console.log(this);
+            console.log(value);
             this.appendChild(value);
-          });
+          }, this);
         } else {
+          console.log('appending element');
           this.appendChild(value);
         }
       });
     };
+
   })($);
 
   // styles
   (function($) {
+
     // `pfx` is a function that takes a standard CSS property name as a parameter
     // and returns it's prefixed version valid for current browser it runs in.
     // The code is heavily inspired by Modernizr http://www.modernizr.com/
@@ -228,6 +245,7 @@ var utils = function () {
       }
       xhr = settings.xhr();
       xhr.onreadystatechange = function() {
+        //console.log(xhr.readyState);
         if (xhr.readyState === 4) {
           clearTimeout(abortTimeout);
           xhrStatus(xhr, settings);
@@ -333,7 +351,7 @@ var utils = function () {
           xhrSuccess(parseResponse(xhr, settings), xhr, settings);
         }
       } else {
-        xhrError("ajax: Unsuccesful request", xhr, settings);
+        xhrError("ajax: Unsuccessful request", xhr, settings);
       }
     };
 
@@ -399,6 +417,7 @@ var utils = function () {
     var isJsonP = function(url) {
       return (new RegExp("=\\?")).test(url);
     };
+
   })($);
 
   // environment
@@ -485,6 +504,7 @@ var utils = function () {
 
     $.isSupported = (true) &&
       (true);
+
   })($);
 
   return $.isSupported ? $ : undefined;
