@@ -1,5 +1,8 @@
 # server.rb
 # This server implements CORS standard to enable cross site http requests.
+require 'rubygems'
+require 'bundler/setup'
+
 require 'sinatra'
 require 'json'
 
