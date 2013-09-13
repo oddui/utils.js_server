@@ -34,7 +34,17 @@ end
 
 post '/post' do
   content_type :json
-  { key: params[:data] }.to_json
+
+  case request.media_type
+  when 'application/x-www-form-urlencoded'
+    # urlencoded data will be decoded and set in params hash
+    { key: params[:data] }.to_json
+  when 'application/json'
+    # params hash will not be set, parse the body directly
+    request.body.to_json
+  else
+    ''
+  end
 end
 
 put '/put' do
