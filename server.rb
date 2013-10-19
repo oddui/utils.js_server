@@ -41,7 +41,8 @@ post '/post' do
     { key: params[:data] }.to_json
   when 'application/json'
     # params hash will not be set, parse the body directly
-    request.body.to_json
+    data = JSON.parse(request.body.read)
+    { key: data['data'] }.to_json
   else
     ''
   end

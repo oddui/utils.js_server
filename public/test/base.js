@@ -6,16 +6,18 @@ $(document).ready(function() {
 
   test('utils base object', function() {
 
-    var selector = '#test>span';
+    $('#test>span').each(function() {
+      ok(_(utils('#test>span')).contains(this), 'selected correct elements');
+    });
 
-    $(selector).each(function() {
-      ok(_(utils(selector)).contains(this), 'selected correct elements');
+    utils('span', document.getElementById('test')).each(function() {
+      ok(_(utils('#test>span')).contains(this), 'selected correct elements with context');
     });
 
     var el = document.getElementById('test');
     ok((utils(el)[0] === el), 'wrapped the element into utils.js dom object');
 
-    $(selector).each(function() {
+    $('#test>span').each(function() {
       ok(_(utils(utils.arrayify(el.children))).contains(this), 'turned elements array into utils.js dom object');
     });
 

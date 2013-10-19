@@ -55,9 +55,16 @@ $(document).ready(function() {
     equal(returned, dom, 'returned utils.js dom object');
   });
 
-  test('filter', function() {
-    ok(utils('#test>span').filter('#span1').length === 1, 'filtered the right element');
-    ok(utils('#test>span').filter('#span1')[0].id === 'span1', 'filtered the right element');
+  test('map', function() {
+    var el = document.createElement('dummy'),
+    dom = utils('#test>span'),
+    returned = dom.map(function(element) {
+      equal(this, element, 'element is passed as thisArg');
+      return el;
+    });
+    returned.each(function(element, index) {
+      equal(el, element, 'elements are mapped');
+    });
   });
 
 });
