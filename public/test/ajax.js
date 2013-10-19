@@ -7,6 +7,7 @@ $(document).ready(function() {
   var host = '/';
   //var host = 'http://localhost:4567/';
   //var host = 'http://localhost:5000/';
+  //var host = 'http://utilsjs.herokuapp.com/';
 
   var jsonEqual = function (actual, expected, message) {
     equal(JSON.stringify(actual), JSON.stringify(expected), message);
@@ -52,7 +53,7 @@ $(document).ready(function() {
       url: host + 'path_do_not_exist',
       error: function (status, xhr) {
         ok(true, 'error callback called');
-        equal(status, 'ajax: Unsuccessful request', 'got status ajax: Unsuccessful request');
+        equal(status, 'ajax: unsuccessful request', 'got status ajax: unsuccessful request');
         equal(xhr.status, 404, 'http 404 not found');
         start();
       }
@@ -143,7 +144,7 @@ $(document).ready(function() {
       url: host + 'get',
       timeout: 1,
       error: function (status) {
-        equal(status, 'ajax: Timeout exceeded', 'timed out, error callback called');
+        equal(status, 'ajax: timeout exceeded', 'timed out, error callback called');
         start();
       }
     });
@@ -248,7 +249,7 @@ $(document).ready(function() {
       url: 'http://api.douban.com/shuo/v2/statuses/user_timeline/57825390?alt=xd&count=1&callback=?',
       timeout: 1,
       error: function (status, xhr) {
-        equal(status, 'ajax: Timeout exceeded', 'jsonp timed out, error callback called');
+        equal(status, 'ajax: timeout exceeded', 'jsonp timed out, error callback called');
         ok(_(xhr).isNull(), 'xhr set to null');
         ok(!window[result.callbackName](), 'jsonp callback set to dummy function');
         ok(!document.contains(result.scriptElement), 'jsonp script element removed');
